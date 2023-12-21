@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order</title>
+</head>
+<body>
+    <h1>Create Order</h1>
+
+    <form method="post" action="{% url 'create_order' %}">
+        {% csrf_token %}
+
+        <h2>Items:</h2>
+        {% for item in items %}
+            <div>
+                <input type="checkbox" name="item_ids" value="{{ item.id }}">
+                <label>{{ item.name }} - ${{ item.price }} ({{ item.currency }})</label>
+            </div>
+        {% endfor %}
+
+        <h2>Discount:</h2>
+        <select name="discount_id">
+            <option value="" selected>None</option>
+            {% for discount in discounts %}
+                <option value="{{ discount.id }}">{{ discount.name }} - {{ discount.amount }}%</option>
+            {% endfor %}
+        </select>
+
+        <h2>Tax:</h2>
+        <select name="tax_id">
+            <option value="" selected>None</option>
+            {% for tax in taxes %}
+                <option value="{{ tax.id }}">{{ tax.name }} - {{ tax.rate }}%</option>
+            {% endfor %}
+        </select>
+
+        <br>
+        <button type="submit">Create Order</button>
+    </form>
+</body>
+</html>
